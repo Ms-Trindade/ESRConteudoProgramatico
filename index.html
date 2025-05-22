@@ -24,7 +24,6 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 100vh;
       width: 100vw;
       box-sizing: border-box;
     }
@@ -80,7 +79,6 @@
     .label-bonito {
       font-size: 1.15rem;
       font-weight: 600;
-      color: #2e7d32;
       letter-spacing: 1px;
       margin-bottom: 10px;
       margin-top: 0;
@@ -107,11 +105,33 @@
       overflow: hidden;
       pointer-events: none;
     }
-    /* Custom Select */
+
+    /* ----------- CAMPOS E SELECTS LARGOS SÓ NA SEÇÃO DE CONTEÚDO ----------- */
+    #secaoConteudo .custom-select,
+    #secaoConteudo input[type="text"],
+    #secaoConteudo textarea {
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+      display: block;
+      box-sizing: border-box;
+    }
+
+    /* O seletor de tipo (topo) e campos de retificação continuam menores */
+    #customSelectTipo,
+    #secaoRetificacao input[type="text"],
+    #secaoRetificacao textarea,
+    #secaoRetificacao .custom-select {
+      width: 100%;
+      max-width: 420px;
+      margin: 0 auto;
+      display: block;
+    }
+
+    /* ----------- ESTILOS GERAIS DOS SELECTS ----------- */
     .custom-select {
       position: relative;
       width: 100%;
-      max-width: 540px;
       font-family: 'Poppins', Arial, sans-serif;
       margin-bottom: 0;
     }
@@ -159,12 +179,54 @@
       transition: max-height 0.35s cubic-bezier(.4,0,.2,1), opacity 0.3s;
       pointer-events: none;
       display: block;
+      overflow-y: hidden;
     }
     .select-items.open {
       max-height: none;
       opacity: 1;
       pointer-events: auto;
+      overflow-y: visible;
     }
+
+    /* ----------- CORES IGUAIS AOS CAMPOS DE TEXTO ----------- */
+    #customSelectDisciplina .select-selected,
+    #customSelectSerie .select-selected,
+    #customSelectMes .select-selected {
+      background: #f1f8e9;
+      border: 1px solid #a5d6a7;
+      color: #2e7d32;
+      box-shadow: none;
+      font-size: 1.1rem;
+    }
+    #customSelectDisciplina .select-selected.open,
+    #customSelectSerie .select-selected.open,
+    #customSelectMes .select-selected.open {
+      border: 1.5px solid #43a047;
+      background: #e8f5e9;
+    }
+
+    /* ----------- APENAS O SELECT DE MESES COM ROLAGEM ----------- */
+    #customOptionsMes.open {
+      max-height: 240px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #43a047 #e8f5e9;
+    }
+
+    /* Chrome, Edge, Safari */
+    #customOptionsMes.open::-webkit-scrollbar {
+      width: 8px;
+      background: #e8f5e9;
+      border-radius: 8px;
+    }
+    #customOptionsMes.open::-webkit-scrollbar-thumb {
+      background: #43a047;
+      border-radius: 8px;
+    }
+    #customOptionsMes.open::-webkit-scrollbar-thumb:hover {
+      background: #388e3c;
+    }
+
     .select-items div {
       padding: 12px 16px;
       cursor: pointer;
@@ -178,6 +240,7 @@
       background: #e8f5e9;
       color: #388e3c;
     }
+
     label {
       display: block;
       margin-top: 18px;
@@ -189,8 +252,7 @@
       width: 100%;
     }
     input[type="text"], textarea {
-      width: 150%;
-      max-width: 540px;
+      width: 100%;
       padding: 10px 12px;
       margin-top: 6px;
       border: 1px solid #a5d6a7;
@@ -204,12 +266,6 @@
       display: block;
       text-align: center;
       resize: none;
-    }
-    #secaoRetificacao input[type="text"],
-    #secaoRetificacao textarea,
-    #secaoRetificacao .custom-select {
-      width: 300%;
-      max-width: 700px;
     }
     input[type="text"]:focus, textarea:focus {
       border: 1.5px solid #43a047;
@@ -277,7 +333,6 @@
       opacity: 0;
       pointer-events: none;
     }
-    /* Loader de envio */
     #loader-envio {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -307,7 +362,7 @@
       color: #a8e063;
       text-shadow: 0 2px 16px #619c19cc;
       display: inline-block;
-      animation: spin 1.2s linear infinite;
+      animation: bounce 1s infinite;
     }
     .esr-loader span:nth-child(2) {
       color: #fff;
@@ -317,12 +372,13 @@
       color: #56ab2f;
       animation-delay: 0.4s;
     }
-    @keyframes spin {
-      0% { transform: rotate(0deg);}
-      80% { transform: rotate(360deg);}
-      100% { transform: rotate(360deg);}
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0);}
+      20% { transform: translateY(-18px);}
+      40% { transform: translateY(0);}
+      60% { transform: translateY(-12px);}
+      80% { transform: translateY(0);}
     }
-    /* Mensagem de confirmação */
     .mensagem-enviada {
       background: linear-gradient(90deg, #43a047 60%, #a8e063 100%);
       color: #fff;
@@ -342,7 +398,6 @@
     .mensagem-enviada.visible {
       display: block;
     }
-    /* Página de agradecimento */
     #pagina-agradecimento {
       display: none;
       flex-direction: column;
@@ -392,7 +447,7 @@
       flex-direction: row;
       gap: 16px;
       margin-top: 18px;
-      flex-wrap: nowrap; /* Não permite quebrar linha */
+      flex-wrap: nowrap;
       justify-content: center;
       align-items: center;
     }
@@ -417,10 +472,8 @@
       border: none;
       cursor: pointer;
       white-space: nowrap;
-      line-height: 1.2; /* Garante alinhamento vertical */
+      line-height: 1.2;
     }
-
-    /* Animação de hover para ambos */
     .botao-link:hover, .botao-link:focus,
     .botao-nova-resposta:hover, .botao-nova-resposta:focus {
       background: linear-gradient(90deg, #388e3c 60%, #43a047 100%);
@@ -428,105 +481,48 @@
       color: #fff;
       text-decoration: none;
     }
-    /* Mantém campos grandes no desktop */
-    .custom-select,
-    input[type="text"], textarea,
-    #secaoRetificacao input[type="text"],
-    #secaoRetificacao textarea,
-    #secaoRetificacao .custom-select {
-      width: 100%;
-      max-width: 700px;
+
+    /* Tremida ao erro + botão vermelho */
+    .botao-tremer {
+      animation: shake 0.4s;
+      background: linear-gradient(90deg, #d32f2f 60%, #ff5252 100%) !important;
+      color: #fff !important;
+    }
+    @keyframes shake {
+      0% { transform: translateX(0);}
+      20% { transform: translateX(-8px);}
+      40% { transform: translateX(8px);}
+      60% { transform: translateX(-6px);}
+      80% { transform: translateX(6px);}
+      100% { transform: translateX(0);}
     }
 
-    #customSelectTipo {
-      max-width: 700px;
-      width: 100%;
+    /* Campos obrigatórios em vermelho */
+    .campo-erro, .campo-erro:focus {
+      border: 2px solid #d32f2f !important;
+      background: #ffebee !important;
+      color: #b71c1c !important;
     }
 
-    /* Botão pode ser um pouco menor */
-    button, .botao-link, .botao-nova-resposta {
-      width: 100%;
-      max-width: 500px;
-    }
-
-    /* Responsivo só em telas pequenas */
     @media (max-width: 600px) {
       .form-container, #pagina-agradecimento .caixa-final {
         max-width: 98vw;
         padding: 6vw 2vw;
       }
-      .custom-select,
-      input[type="text"], textarea,
-      #secaoRetificacao input[type="text"],
-      #secaoRetificacao textarea,
-      #secaoRetificacao .custom-select,
-      #customSelectTipo,
-      button, .botao-link, .botao-nova-resposta {
-        max-width: 100vw;
-        width: 100%;
-        font-size: 1rem;
-        min-width: 0;
-      }
       h2 {
         font-size: 1.2rem;
       }
-    }
-    /* Apenas para o seletor de meses */
-    #customOptionsMes {
-      max-height: 220px;
-      overflow-y: auto;
-      scrollbar-width: thin;
-      scrollbar-color: #43a047 #e8f5e9;
-      border-radius: 10px;
-    }
-    #customOptionsMes::-webkit-scrollbar {
-      width: 10px;
-      background: #e8f5e9;
-      border-radius: 8px;
-    }
-    #customOptionsMes::-webkit-scrollbar-thumb {
-      background: linear-gradient(120deg, #43a047 60%, #a8e063 100%);
-      border-radius: 8px;
-      border: 2px solid #e8f5e9;
-    }
-    #customOptionsMes::-webkit-scrollbar-thumb:hover {
-      background: linear-gradient(120deg, #388e3c 60%, #43a047 100%);
-    }
-    #customSelectTipo {
-      max-width: 700px;
-      width: 700%;
-    }
-    #secaoConteudo .custom-select .select-selected,
-    #secaoConteudo .custom-select .select-items {
-      background: #f1f8e9;
-      border: 1px solid #a5d6a7;
-      color: #2e7d32;
-      border-radius: 10px;
-    }
-
-    #secaoConteudo .custom-select .select-selected.open {
-      border: 1.5px solid #43a047;
-      background: #e8f5e9;
-      color: #2e7d32;
-    }
-
-    #secaoConteudo .custom-select .select-arrow {
-      color: #2e7d32;
-    }
-
-    #secaoConteudo .custom-select .select-items {
-      background: #f1f8e9;
-    }
-
-    #secaoConteudo .custom-select .select-items div {
-      color: #2e7d32;
-      background: #f1f8e9;
-    }
-
-    #secaoConteudo .custom-select .select-items div:hover,
-    #secaoConteudo .custom-select .select-items div.selected {
-      background: #e8f5e9;
-      color: #388e3c;
+      #secaoConteudo .custom-select,
+      #secaoConteudo input[type="text"],
+      #secaoConteudo textarea,
+      #customSelectTipo,
+      #secaoRetificacao input[type="text"],
+      #secaoRetificacao textarea,
+      #secaoRetificacao .custom-select {
+        max-width: 100vw;
+        width: 100%;
+        min-width: 0;
+      }
     }
   </style>
 </head>
@@ -549,7 +545,6 @@
     <div id="mensagem-enviada" class="mensagem-enviada">
       <span>✅ Formulário enviado com sucesso!</span>
     </div>
-    <!-- Confetes -->
     <canvas id="confetti-canvas" class="hidden" style="position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:10002;"></canvas>
   </div>
 
@@ -665,7 +660,6 @@
         <button class="botao-nova-resposta" onclick="novaResposta()">Enviar outra resposta</button>
       </div>
     </div>
-    <!-- Confetes na página final -->
     <canvas id="confetti-canvas-final" style="position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:10002;"></canvas>
   </div>
 
@@ -809,6 +803,26 @@
         el.classList.remove("campo-animado");
       });
     });
+
+    // Remove o erro ao digitar ou selecionar novamente
+    document.querySelectorAll("input[type='text'], textarea").forEach(el => {
+      el.addEventListener("input", function() {
+        el.classList.remove("campo-erro");
+      });
+      el.addEventListener("focus", function() {
+        el.classList.remove("campo-erro");
+      });
+    });
+
+    // Para selects customizados
+    ["selectedDisciplina", "selectedSerie", "selectedMes"].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener("click", function() {
+          el.classList.remove("campo-erro");
+        });
+      }
+    });
   });
 
   // Confete simples (canvas)
@@ -821,11 +835,11 @@
     canvas.height = H;
     let particles = [];
     let colors = ["#43a047", "#a8e063", "#56ab2f", "#fff", "#388e3c", "#fbc02d", "#e57373"];
-    const totalParticles = 180; // Mais confetes
+    const totalParticles = 180;
     for (let i = 0; i < totalParticles; i++) {
       particles.push({
         x: Math.random() * W,
-        y: Math.random() * -H * 1.2, // Começa mais acima
+        y: Math.random() * -H * 1.2,
         r: Math.random() * 8 + 4,
         d: Math.random() * 80 + 10,
         color: colors[Math.floor(Math.random() * colors.length)],
@@ -852,7 +866,7 @@
         ctx.moveTo(p.x + p.tilt + p.r / 3, p.y);
         ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r / 3);
         ctx.stroke();
-        if (p.y < H + 20) allOut = false; // Se algum ainda está na tela, continua
+        if (p.y < H + 20) allOut = false;
       }
       if (!allOut) {
         animationFrame = requestAnimationFrame(draw);
@@ -865,26 +879,70 @@
     draw();
   }
 
-  // Validação e envio
   function enviar() {
+    const botao = document.querySelector(
+      (selectedValue === "conteudo")
+        ? "#secaoConteudo button"
+        : "#secaoRetificacao button"
+    );
+
+    // Limpa erros anteriores
+    document.querySelectorAll('.campo-erro').forEach(el => el.classList.remove('campo-erro'));
+
+    let erro = false;
+
     if (selectedValue === "" || selectedValue === undefined) {
-      mostrarErro("Selecione o tipo de envio.");
+      erro = true;
+    }
+
+    if (selectedValue === "conteudo") {
+      // Seletores
+      if (selectedDisciplina === "") {
+        document.querySelector("#selectedDisciplina").classList.add("campo-erro");
+        erro = true;
+      }
+      if (selectedSerie === "") {
+        document.querySelector("#selectedSerie").classList.add("campo-erro");
+        erro = true;
+      }
+      if (selectedMes === "") {
+        document.querySelector("#selectedMes").classList.add("campo-erro");
+        erro = true;
+      }
+      // Campo texto
+      const conteudo = document.querySelector("#secaoConteudo textarea");
+      if (conteudo.value.trim() === "") {
+        conteudo.classList.add("campo-erro");
+        erro = true;
+      }
+    }
+
+    if (selectedValue === "retificacao") {
+      const id = document.querySelector("#secaoRetificacao input[type='text']");
+      const comentario = document.querySelector("#secaoRetificacao textarea");
+      if (id.value.trim() === "") {
+        id.classList.add("campo-erro");
+        erro = true;
+      }
+      if (comentario.value.trim() === "") {
+        comentario.classList.add("campo-erro");
+        erro = true;
+      }
+    }
+
+    if (erro) {
+      mostrarErro("Todos os campos precisam estar preenchidos para enviar!");
+      if (botao) {
+        botao.classList.add("botao-tremer");
+        setTimeout(() => botao.classList.remove("botao-tremer"), 400);
+      }
       return;
     }
+
     let formData = new FormData();
 
     if (selectedValue === "conteudo") {
-      if (
-        selectedDisciplina === "" ||
-        selectedSerie === "" ||
-        selectedMes === "" ||
-        document.querySelector("#secaoConteudo textarea").value.trim() === ""
-      ) {
-        mostrarErro("Preencha todos os campos para enviar.");
-        return;
-      }
-      // Preenche os campos do Google Forms
-      formData.append("entry.1340979957", "Postagem de conteúdo"); // valor exato do Forms
+      formData.append("entry.1340979957", "Postagem de conteúdo");
       formData.append("entry.1430642646", selectedDisciplina);
       formData.append("entry.716943280", selectedSerie);
       formData.append("entry.1093269950", selectedMes);
@@ -894,49 +952,38 @@
     if (selectedValue === "retificacao") {
       const id = document.querySelector("#secaoRetificacao input[type='text']").value.trim();
       const comentario = document.querySelector("#secaoRetificacao textarea").value.trim();
-      if (id === "" || comentario === "") {
-        mostrarErro("Preencha todos os campos para enviar.");
-        return;
-      }
-      formData.append("entry.1340979957", "Retificação de erro"); // valor exato do Forms
+      formData.append("entry.1340979957", "Retificação de erro");
       formData.append("entry.1966340304", id);
       formData.append("entry.1043073838", comentario);
     }
     
-    // Envia para o Google Forms
     fetch("https://docs.google.com/forms/d/e/1FAIpQLSdK8tLprG4XXOTyUnXvJDO9AiuiiPrB0fbqZ5k-Koxz6bqjLQ/formResponse", {
       method: "POST",
       mode: "no-cors",
       body: formData
     });
 
-    // Mostra loader de envio
     document.getElementById('loader-envio').classList.add('visible');
 
-    // Mostra mensagem de confirmação após 1s (ainda durante o loader)
     setTimeout(() => {
       document.getElementById('mensagem-enviada').classList.add('visible');
     }, 1000);
 
-    // Após mais 1s (total 2s), inicia a transição do loader
     setTimeout(() => {
       const loaderEnvio = document.getElementById('loader-envio');
       const paginaAgradecimento = document.getElementById('pagina-agradecimento');
       loaderEnvio.classList.add('fade-out');
-      // Aguarda o tempo da transição (0.7s) para só então mostrar a tela final
       setTimeout(() => {
         loaderEnvio.classList.remove('fade-out');
         loaderEnvio.classList.remove('visible');
         loaderEnvio.style.display = 'none';
         document.getElementById('formContainer').style.display = 'none';
         paginaAgradecimento.classList.add('visible');
-        // Confete na página final
         startConfetti('confetti-canvas-final');
-        // Esconde a mensagem após 2s (opcional)
         setTimeout(() => {
           document.getElementById('mensagem-enviada').classList.remove('visible');
         }, 2000);
-      }, 700); // Tempo igual ao transition do CSS
+      }, 700);
     }, 2000);
   }
 
