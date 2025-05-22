@@ -434,8 +434,13 @@
     #secaoRetificacao input[type="text"],
     #secaoRetificacao textarea,
     #secaoRetificacao .custom-select {
-      width: 400%;
+      width: 100%;
       max-width: 700px;
+    }
+
+    #customSelectTipo {
+      max-width: 700px;
+      width: 100%;
     }
 
     /* Botão pode ser um pouco menor */
@@ -455,10 +460,12 @@
       #secaoRetificacao input[type="text"],
       #secaoRetificacao textarea,
       #secaoRetificacao .custom-select,
+      #customSelectTipo,
       button, .botao-link, .botao-nova-resposta {
         max-width: 100vw;
         width: 100%;
         font-size: 1rem;
+        min-width: 0;
       }
       h2 {
         font-size: 1.2rem;
