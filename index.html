@@ -16,7 +16,7 @@
       min-height: 100vh;
       margin: 0;
       padding: 0;
-      background: linear-gradient(120deg, #619c19, #56ab2f,#0c7c1b);
+      background: linear-gradient(120deg, #619c19, #6f9c59,#0c7c1b, #072909);
       background-size: 400% 400%;
       animation: gradientMove 12s ease-in-out infinite;
       font-family: 'Poppins', Arial, sans-serif;
@@ -108,12 +108,11 @@
 
     /* ----------- CAMPOS E SELECTS LARGOS SÓ NA SEÇÃO DE CONTEÚDO ----------- */
     #secaoConteudo .custom-select,
-    #secaoConteudo input[type="text"],
-    #secaoConteudo textarea {
+    #secaoConteudo .select-selected,
+    #secaoConteudo .select-items {
       width: 100%;
       max-width: 800px;
-      margin: 0 auto;
-      display: block;
+      min-width: 0;
       box-sizing: border-box;
     }
 
@@ -123,7 +122,7 @@
     #secaoRetificacao textarea,
     #secaoRetificacao .custom-select {
       width: 100%;
-      max-width: 420px;
+      max-width: 800px;
       margin: 0 auto;
       display: block;
     }
@@ -253,6 +252,7 @@
     }
     input[type="text"], textarea {
       width: 100%;
+      max-width: 800px;
       padding: 10px 12px;
       margin-top: 6px;
       border: 1px solid #a5d6a7;
@@ -372,13 +372,29 @@
       color: #56ab2f;
       animation-delay: 0.4s;
     }
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0);}
-      20% { transform: translateY(-18px);}
-      40% { transform: translateY(0);}
-      60% { transform: translateY(-12px);}
-      80% { transform: translateY(0);}
+
+    /* Sombra nas letras da tela de carregamento */
+    .esr-loader span {
+      text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Adiciona sombra */
+      animation: bounce 1s infinite, fadeUp 1.5s ease-in-out forwards; /* Adiciona animação de sumir para cima */
     }
+
+    /* Animação para sumir jogando para cima */
+    @keyframes fadeUp {
+      0% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      80% {
+        opacity: 0.5;
+        transform: translateY(-20px);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-50px);
+      }
+    }
+
     .mensagem-enviada {
       background: linear-gradient(90deg, #43a047 60%, #a8e063 100%);
       color: #fff;
@@ -504,6 +520,31 @@
       color: #b71c1c !important;
     }
 
+    /* Ajustar largura fixa e centralizar os seletores */
+    #customSelectDisciplina .select-selected,
+    #customSelectSerie .select-selected,
+    #customSelectMes .select-selected,
+    #secaoConteudo .custom-select,
+    #secaoRetificacao .custom-select {
+      width: 700px; /* Largura fixa */
+      max-width: 100%; /* Para dispositivos menores */
+      margin: 0 auto; /* Centralizar */
+    }
+
+    /* Ajustar largura fixa e centralizar os campos de texto */
+    #secaoConteudo textarea,
+    #secaoRetificacao textarea,
+    #secaoRetificacao input[type="text"] {
+      width: 700px; /* Largura fixa */
+      max-width: 100%; /* Para dispositivos menores */
+      margin: 0 auto; /* Centralizar */
+    }
+
+    /* Permitir redimensionamento do campo de texto */
+    #secaoConteudo textarea {
+      resize: vertical; /* Permite redimensionar apenas na vertical */
+    }
+
     @media (max-width: 600px) {
       .form-container, #pagina-agradecimento .caixa-final {
         max-width: 98vw;
@@ -519,10 +560,26 @@
       #secaoRetificacao input[type="text"],
       #secaoRetificacao textarea,
       #secaoRetificacao .custom-select {
-        max-width: 100vw;
-        width: 100%;
+        max-width: 90vw;
+        width: 90%;
         min-width: 0;
       }
+    }
+
+    /* Animação de fade-in para a página de agradecimento */
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    #pagina-agradecimento {
+      animation: fadeIn 0.7s ease-in-out forwards; /* Adiciona a animação de entrada */
     }
   </style>
 </head>
@@ -978,7 +1035,8 @@
         loaderEnvio.classList.remove('visible');
         loaderEnvio.style.display = 'none';
         document.getElementById('formContainer').style.display = 'none';
-        paginaAgradecimento.classList.add('visible');
+        paginaAgradecimento.style.display = 'flex'; // Garante que a página seja exibida
+        paginaAgradecimento.classList.add('visible'); // Aplica a animação de fade-in
         startConfetti('confetti-canvas-final');
         setTimeout(() => {
           document.getElementById('mensagem-enviada').classList.remove('visible');
@@ -998,24 +1056,41 @@
   }
 
   function novaResposta() {
+    // Redefinir valores selecionados
     selectedValue = "";
     selectedDisciplina = "";
     selectedSerie = "";
     selectedMes = "";
+
+    // Redefinir textos dos selects
     document.getElementById('selectedOption').childNodes[0].nodeValue = "Escolha uma opção... ";
-    document.getElementById('selectedDisciplina').childNodes[0].nodeValue = "Escolha uma opção... ";
-    document.getElementById('selectedSerie').childNodes[0].nodeValue = "Escolha uma opção... ";
-    document.getElementById('selectedMes').childNodes[0].nodeValue = "Escolha uma opção... ";
+    document.getElementById('selectedDisciplina').childNodes[0].nodeValue = "Selecione sua disciplina. ";
+    document.getElementById('selectedSerie').childNodes[0].nodeValue = "Selecione a série. ";
+    document.getElementById('selectedMes').childNodes[0].nodeValue = "Selecione o mês. ";
+
+    // Remover seleções anteriores
     document.querySelectorAll('.select-items div.selected').forEach(opt => opt.classList.remove('selected'));
+
+    // Limpar campos de texto e textarea
     document.querySelectorAll('textarea').forEach(t => t.value = "");
     document.querySelectorAll('input[type="text"]').forEach(i => i.value = "");
+
+    // Atualizar visibilidade dos placeholders
     atualizarOpcoes('tipoEnvio');
     atualizarOpcoes('disciplina');
     atualizarOpcoes('serie');
     atualizarOpcoes('mes');
+
+    // Mostrar o formulário novamente
     mostrarSecaoCustom("");
-    document.getElementById('formContainer').style.display = '';
+    document.getElementById('formContainer').style.display = 'flex';
+    document.getElementById('formContainer').classList.add('visible');
+
+    // Ocultar a página de agradecimento
     document.getElementById('pagina-agradecimento').classList.remove('visible');
+    document.getElementById('pagina-agradecimento').style.display = 'none';
+
+    // Mostrar o label do tipo de envio
     document.getElementById("labelTipoEnvio").classList.remove("hidden");
   }
 
