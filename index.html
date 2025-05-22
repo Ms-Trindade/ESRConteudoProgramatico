@@ -189,7 +189,7 @@
       width: 100%;
     }
     input[type="text"], textarea {
-      width: 100%;
+      width: 150%;
       max-width: 540px;
       padding: 10px 12px;
       margin-top: 6px;
@@ -208,8 +208,8 @@
     #secaoRetificacao input[type="text"],
     #secaoRetificacao textarea,
     #secaoRetificacao .custom-select {
-      width: 100%;
-      max-width: 540px;
+      width: 300%;
+      max-width: 700px;
     }
     input[type="text"]:focus, textarea:focus {
       border: 1.5px solid #43a047;
@@ -219,7 +219,7 @@
     button {
       margin-top: 24px;
       width: 100%;
-      max-width: 400px;
+      max-width: 500px;
       padding: 12px 0;
       background: linear-gradient(90deg, #43a047 60%, #66bb6a 100%);
       color: #fff;
@@ -400,7 +400,7 @@
       display: flex;
       flex: 1 1 0;
       min-width: 180px;
-      max-width: 400px;
+      max-width: 500px;
       justify-content: center;
       align-items: center;
       text-align: center;
@@ -428,20 +428,23 @@
       color: #fff;
       text-decoration: none;
     }
-    @media (max-width: 500px) {
-      .botoes-finais {
-        flex-direction: column;
-        gap: 10px;
-      }
-      .botao-link, .botao-nova-resposta {
-        width: 250%;
-        max-width: none;
-        font-size: 1rem;
-        padding: 10px 6px;
-        min-width: 80px;
-        max-width: 100vw;
-      }
+    /* Mantém campos grandes no desktop */
+    .custom-select,
+    input[type="text"], textarea,
+    #secaoRetificacao input[type="text"],
+    #secaoRetificacao textarea,
+    #secaoRetificacao .custom-select {
+      width: 400%;
+      max-width: 700px;
     }
+
+    /* Botão pode ser um pouco menor */
+    button, .botao-link, .botao-nova-resposta {
+      width: 100%;
+      max-width: 500px;
+    }
+
+    /* Responsivo só em telas pequenas */
     @media (max-width: 600px) {
       .form-container, #pagina-agradecimento .caixa-final {
         max-width: 98vw;
@@ -452,7 +455,7 @@
       #secaoRetificacao input[type="text"],
       #secaoRetificacao textarea,
       #secaoRetificacao .custom-select,
-      button {
+      button, .botao-link, .botao-nova-resposta {
         max-width: 100vw;
         width: 100%;
         font-size: 1rem;
@@ -908,15 +911,16 @@
       document.getElementById('mensagem-enviada').classList.add('visible');
     }, 1000);
 
-    // Após mais 1s (total 2s), vai para a tela final e esconde a mensagem
+    // Após mais 1s (total 2s), inicia a transição do loader
     setTimeout(() => {
       const loaderEnvio = document.getElementById('loader-envio');
       const paginaAgradecimento = document.getElementById('pagina-agradecimento');
       loaderEnvio.classList.add('fade-out');
-      // Aguarda o tempo da transição (0.7s) para esconder de fato
+      // Aguarda o tempo da transição (0.7s) para só então mostrar a tela final
       setTimeout(() => {
         loaderEnvio.classList.remove('fade-out');
         loaderEnvio.classList.remove('visible');
+        loaderEnvio.style.display = 'none';
         document.getElementById('formContainer').style.display = 'none';
         paginaAgradecimento.classList.add('visible');
         // Confete na página final
